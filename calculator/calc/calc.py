@@ -1,39 +1,28 @@
-""" This is the increment function"""
-from calc.history.calculations import Calculations
-# the calculator class just contains the methods to calculate
+"""Calculation Class"""
 
 
-class Calculator:
-    """ This is the Calculator class"""
-    # the calculator class just calls methods on Calculations class
+class Calculation:
+    """ calculation abstract base class"""
 
-    @staticmethod
-    def get_result_value():
-        """ This is the get the result of the calculation"""
-        # I made this method so that I don't have more than one action per function
-        return Calculations.get_last_calculation_result_value()
+    # pylint: disable=too-few-public-methods
+    def __init__(self, values: tuple):
+        """ constructor method"""
+        self.values = Calculation.convert_args_to_tuple_of_float(values)
 
-    @staticmethod
-    # tuple allows me to pass in as many values as a I want
-    def add_numbers(tuple_values: tuple):
-        """ adds list of numbers"""
-        Calculations.add_addition_calculation(tuple_values)
-        return True
+    @classmethod
+    def create(cls, values: tuple):
+        """ factory method"""
+        return cls(values)
 
     @staticmethod
-    def subtract_numbers(tuple_values: tuple):
-        """ subtract a list of numbers from result"""
-        Calculations.add_subtraction_calculation(tuple_values)
-        return True
-
-    @staticmethod
-    def multiply_numbers(tuple_values: tuple):
-        """ multiplication number from result"""
-        Calculations.add_multiplication_calculation(tuple_values)
-        return True
-
-    @staticmethod
-    def divide_numbers(tuple_values: tuple):
-        """ division number from result"""
-        Calculations.add_multiplication_calculation(tuple_values)
-        return True
+    def convert_args_to_tuple_of_float(values):
+        """ standardize values to list of floats"""
+        # lists can be modified and tuple cannot, tuple are faster.
+        # We need to convert the tuple of potentially random data types (its raw data)
+        # into a standard data format to keep things consistent so we convert it to float
+        # then i make it a tuple again because i actually won't need to change the calculation
+        # values. I can also use it as a list and then i would be able to edit the calculation
+        list_values_float = []
+        for item in values:
+            list_values_float.append(float(item))
+        return tuple(list_values_float)
